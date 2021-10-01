@@ -29,16 +29,52 @@ def client(app):
         yield client
 
 
-def test_public_access(client):
-    response = client.get('/public')
-    assert response.status_code == 204
+class TestPublicAccess():
+
+    def test_public_access(self, client):
+        response = client.get('/resource/public')
+        assert response.status_code == 204
 
 
-def test_user_access(client):
-    response = client.get('/users')
-    assert response.status_code == 204
+class TestUserAccess():
+    @pytest.fixture(autouse=True)
+    def login(self, client):
+        return client.get('/user/login')
+
+    @pytest.fixture()
+    def logout(self, login):
+        client.get('/user/logout')
+
+    @pytest.mark.usefixtures('login')
+    def test_correct_login(self, login):
+        assert login.status_code == 204
+
+    @pytest.mark.usefixtures('login')
+    def test_correct_logout(self, logout):
+        assert logout.status_code == 204
+
+    def test_user_access(self, client):
+        response = client.get('/resource/users')
+        assert response.status_code == 204
 
 
-def test_admin_access(client):
-    response = client.get('/admins')
-    assert response.status_code == 204
+class TestAdminAccess():
+    def login(self, client):
+        return client.get('/user/login')
+
+    @pytest.fixture()
+    def logout(self, login):
+        client.get('/user/logout')
+
+    @pytest.mark.usefixtures('login')
+    def test_correct_login(self, login):
+        assert login.status_code == 204
+
+    @pytest.mark.usefixtures('login')
+    def test_correct_logout(self, logout):
+        assert logout.status_code == 204
+
+    @pytest.mark.usefixtures('login')
+    def test_admin_access(self, client):
+        response = client.get('/resource/admins')
+        assert response.status_code == 204
