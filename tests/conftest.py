@@ -1,6 +1,6 @@
+import jwt
 import pytest
-from example import create_app
-from example import database
+from example import create_app, database
 
 configs = [{
     'SECRET_KEY': 'not-so-secret-for-testing',
@@ -8,6 +8,9 @@ configs = [{
     'CLIENT_SECRET': "not-so-secret-for-testing"
 }]
 
+
+# -------------------------------------------------------------------
+# Application fixtures ----------------------------------------------
 
 @pytest.fixture(scope='session', params=configs)
 def application_configuration(request):
@@ -43,3 +46,26 @@ def session(app, db):
         db.session.begin_nested()
         yield
         db.session.rollback()
+
+
+# -------------------------------------------------------------------
+# Authorization fixtures --------------------------------------------
+
+@pytest.fixture(scope="class")
+def token_sub(request):
+    return request.param
+
+
+@pytest.fixture(scope="class")
+def token_iss(request):
+    return request.param
+
+
+@pytest.fixture(scope="class")
+def access_token(app, token_sub, token_iss):
+    """Generates a token encrypted with the app key"""
+    return jwt.encode(
+        {'sub': token_sub, 'iss': token_iss},
+        app.config.get('SECRET_KEY'),
+        algorithm='HS256'
+    )

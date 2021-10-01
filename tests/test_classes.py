@@ -3,8 +3,9 @@ import pytest
 
 class UsesLogin():
     @pytest.fixture(scope="class", autouse=True)
-    def login(self, client):
-        return client.get('/user/login')
+    def login(self, client, access_token):
+        headers = {'Authorization': 'Bearer {}'.format(access_token)}
+        return client.get('/user/login', headers=headers)
 
     @pytest.fixture(scope="function")
     def logout(self, client, login):
