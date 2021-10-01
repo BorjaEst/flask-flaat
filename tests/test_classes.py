@@ -2,11 +2,11 @@ import pytest
 
 
 class UsesLogin():
-    @pytest.fixture(autouse=True)
+    @pytest.fixture(scope="class", autouse=True)
     def login(self, client):
         return client.get('/user/login')
 
-    @pytest.fixture()
+    @pytest.fixture(scope="class")
     def logout(self, client, login):
         client.get('/user/logout')
 
