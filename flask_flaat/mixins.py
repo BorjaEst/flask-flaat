@@ -10,10 +10,10 @@ __all__ = ["UserMixin", "AnonymousUserMixin"]
 
 
 class UserMixin(flask_login.UserMixin):
-    '''
+    """
     This provides default implementations for the methods that Flask-Login
     expects user objects to have.
-    '''
+    """
 
     def get_id(self):
         try:
