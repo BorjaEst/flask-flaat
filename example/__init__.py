@@ -1,6 +1,6 @@
 from flask import Flask
 
-from .extensions import login_manager
+from .extensions import login_manager, database
 from .routes import resource_blp, user_blp
 
 
@@ -15,6 +15,7 @@ def create_app(test_config={}):
 
 def register_extensions(app):
     """Register Flask extensions."""
+    database.init_app(app)
     login_manager.init_app(app)
 
 
