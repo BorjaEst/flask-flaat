@@ -7,5 +7,6 @@ It lets you log your users in and out in a database-independent manner.
 """
 
 from .login_manager import FlaatLoginManager as LoginManager
+from .mixins import UserMixin
 
-__all__ = ["LoginManager"]
+__all__ = ["LoginManager", "UserMixin"]
