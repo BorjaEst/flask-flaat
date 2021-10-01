@@ -1,7 +1,7 @@
 from flask import Flask
 
 from .extensions import login_manager
-from .routes import admin_blp, public_blp, user_blp
+from .routes import resource_blp, user_blp
 
 
 def create_app(test_config={}):
@@ -20,6 +20,5 @@ def register_extensions(app):
 
 def register_blueprints(app):
     """Register Flask blueprints."""
-    app.register_blueprint(public_blp,  url_prefix='/public')
-    app.register_blueprint(user_blp, url_prefix='/users')
-    app.register_blueprint(admin_blp, url_prefix='/admins')
+    app.register_blueprint(resource_blp,  url_prefix='/resource')
+    app.register_blueprint(user_blp, url_prefix='/user')
