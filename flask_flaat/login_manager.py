@@ -5,6 +5,8 @@ The LoginManager class.
 from flask_login import LoginManager
 from flaat import Flaat
 
+from .config import TRUSTED_OP_LIST
+
 
 class MyFlaat(Flaat):
     def __init__(self, app, *args, **kwargs):
@@ -17,7 +19,7 @@ class MyFlaat(Flaat):
 
     @trusted_op_list.setter
     def trusted_op_list(self, value):
-        self.app.config['TRUSTED_OP_LIST'] = value
+        pass
 
     @property
     def client_id(self):
@@ -25,7 +27,7 @@ class MyFlaat(Flaat):
 
     @client_id.setter
     def client_id(self, value):
-        self.app.config['CLIENT_ID'] = value
+        pass
 
     @property
     def client_secret(self):
@@ -33,7 +35,7 @@ class MyFlaat(Flaat):
 
     @client_secret.setter
     def client_secret(self, value):
-        self.app.config['CLIENT_SECRET'] = value
+        pass
 
 
 class FlaatLoginManager(LoginManager):
@@ -47,6 +49,7 @@ class FlaatLoginManager(LoginManager):
         LoginManager.__init__(self, *args, **kwargs)
 
     def init_app(self, app, **kwargs):
+        LoginManager.init_app(self, app, **kwargs)
         app.flaat = MyFlaat(app)
         app.flaat.set_web_framework('flask')
-        LoginManager.init_app(self, app, **kwargs)
+        app.config.setdefault('TRUSTED_OP_LIST', TRUSTED_OP_LIST)
