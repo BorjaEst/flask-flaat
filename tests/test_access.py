@@ -4,8 +4,8 @@ from example import create_app
 
 configs = [{
     'SECRET_KEY': 'not-so-secret-for-testing',
-    'OIDC_CLIENT_ID': "test-oidc-client",
-    'OIDC_CLIENT_SECRET': "not-so-secret-for-testing"
+    'CLIENT_ID': "test-oidc-client",
+    'CLIENT_SECRET': "not-so-secret-for-testing"
 }]
 
 
