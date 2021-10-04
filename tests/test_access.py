@@ -37,6 +37,14 @@ class TestAsPublic():
         response = client.get('/resource/admins')
         assert response.status_code == 401
 
+    def test_user_login(self, client):
+        response = client.get('/user/login')
+        assert response.status_code == 401
+
+    def test_user_logout(self, client):
+        response = client.get('/user/logout')
+        assert response.status_code == 401
+
 
 @pytest.mark.parametrize('token_sub', [user1['sub']], indirect=True)
 @pytest.mark.parametrize('token_iss', [user1['iss']], indirect=True)
