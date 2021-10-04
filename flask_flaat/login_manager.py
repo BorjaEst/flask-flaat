@@ -48,12 +48,13 @@ class FlaatLoginManager(LoginManager):
 
     def __init__(self, *args, **kwargs):
         LoginManager.__init__(self, *args, **kwargs)
+        self._flaat = None
         self._request_callback = lambda request: self.request_callback(request)
 
     def init_app(self, app, **kwargs):
         LoginManager.init_app(self, app, **kwargs)
-        app.flaat = MyFlaat(app)
-        app.flaat.set_web_framework('flask')
+        self._flaat = MyFlaat(app)
+        self._flaat.set_web_framework('flask')
         app.config.setdefault('TRUSTED_OP_LIST', TRUSTED_OP_LIST)
 
     def request_loader(self, callback):

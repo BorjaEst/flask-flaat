@@ -1,23 +1,14 @@
 import pytest
 from example import models
 
-from .test_classes import UsesLogin
+from .test_classes import UsesLogin, NeedsAdmin
 
-user1 = dict(sub='u1', iss='iss', email="u1@iss.com")
-admin = dict(sub='a1', iss='iss', email="a1@iss.com")
+user = dict(sub='user', iss='iss', email="user@iss.com")
 
 
-@pytest.fixture(scope="module", autouse=True, params=[user1])
+@pytest.fixture(scope="module", autouse=True, params=[user])
 def create_user(request, db):
     user = models.User(**request.param)
-    db.session.add(user)
-    db.session.commit()
-    return user
-
-
-@pytest.fixture(scope="module", autouse=True, params=[admin])
-def create_admin(request, db):
-    user = models.Admin(**request.param)
     db.session.add(user)
     db.session.commit()
     return user
@@ -46,8 +37,8 @@ class TestAsPublic():
         assert response.status_code == 401
 
 
-@pytest.mark.parametrize('token_sub', [user1['sub']], indirect=True)
-@pytest.mark.parametrize('token_iss', [user1['iss']], indirect=True)
+@pytest.mark.parametrize('token_sub', [user['sub']], indirect=True)
+@pytest.mark.parametrize('token_iss', [user['iss']], indirect=True)
 class TestUsingUserToken():
     @pytest.fixture(scope="class")
     def headers(self, access_token):
@@ -66,8 +57,8 @@ class TestUsingUserToken():
         assert response.status_code == 403
 
 
-@pytest.mark.parametrize('token_sub', [user1['sub']], indirect=True)
-@pytest.mark.parametrize('token_iss', [user1['iss']], indirect=True)
+@pytest.mark.parametrize('token_sub', [user['sub']], indirect=True)
+@pytest.mark.parametrize('token_iss', [user['iss']], indirect=True)
 class TestLoggedAsUser(UsesLogin):
 
     def test_public_resource(self, client):
@@ -83,9 +74,9 @@ class TestLoggedAsUser(UsesLogin):
         assert response.status_code == 403
 
 
-@pytest.mark.parametrize('token_sub', [admin['sub']], indirect=True)
-@pytest.mark.parametrize('token_iss', [admin['iss']], indirect=True)
-class TestUsingAdminToken():
+@pytest.mark.parametrize('token_sub', [user['sub']], indirect=True)
+@pytest.mark.parametrize('token_iss', [user['iss']], indirect=True)
+class TestUsingAdminToken(NeedsAdmin):
     @pytest.fixture(scope="class")
     def headers(self, access_token):
         return {'Authorization': 'Bearer {}'.format(access_token)}
@@ -103,9 +94,9 @@ class TestUsingAdminToken():
         assert response.status_code == 204
 
 
-@pytest.mark.parametrize('token_sub', [admin['sub']], indirect=True)
-@pytest.mark.parametrize('token_iss', [admin['iss']], indirect=True)
-class TestLoggedAsAdmin(UsesLogin):
+@pytest.mark.parametrize('token_sub', [user['sub']], indirect=True)
+@pytest.mark.parametrize('token_iss', [user['iss']], indirect=True)
+class TestLoggedAsAdmin(UsesLogin, NeedsAdmin):
 
     def test_public_resource(self, client):
         response = client.get('/resource/public')

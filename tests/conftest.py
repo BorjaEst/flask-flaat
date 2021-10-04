@@ -1,5 +1,6 @@
 import jwt
 import pytest
+import flaat
 from example import create_app, database
 
 configs = [{
@@ -51,6 +52,22 @@ def session(app, db):
 # -------------------------------------------------------------------
 # Authorization fixtures --------------------------------------------
 
+@pytest.fixture(scope="session", autouse=True)
+def userendpoints_info(session_mocker):
+    session_mocker.patch.object(
+        flaat.Flaat, 'get_info_from_userinfo_endpoints',
+        lambda *args, **kwargs: {},
+    )
+
+
+@pytest.fixture(scope="session", autouse=True)
+def introspection_info(session_mocker):
+    session_mocker.patch.object(
+        flaat.Flaat, 'get_info_from_introspection_endpoints',
+        lambda *args, **kwargs: {},
+    )
+
+
 @pytest.fixture(scope="class")
 def token_sub(request):
     return request.param
@@ -65,7 +82,12 @@ def token_iss(request):
 def access_token(app, token_sub, token_iss):
     """Generates a token encrypted with the app key"""
     return jwt.encode(
-        {'sub': token_sub, 'iss': token_iss},
+        {
+            'sub': token_sub, 'iss': token_iss,
+            "exp": 9999999999,
+            "iat": 0000000000,
+            "scope": "openid email groups",
+        },
         app.config.get('SECRET_KEY'),
         algorithm='HS256'
     )
