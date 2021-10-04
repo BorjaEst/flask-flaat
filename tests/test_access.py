@@ -37,6 +37,26 @@ class TestAsPublic():
         assert response.status_code == 401
 
 
+@pytest.mark.parametrize('token_sub', ['unknown'], indirect=True)
+@pytest.mark.parametrize('token_iss', ['unknown'], indirect=True)
+class TestUnknownUser():
+    @pytest.fixture(scope="class")
+    def headers(self, access_token):
+        return {'Authorization': 'Bearer {}'.format(access_token)}
+
+    def test_public_resource(self, client, headers):
+        response = client.get('/resource/public', headers=headers)
+        assert response.status_code == 204
+
+    def test_user_resource(self, client, headers):
+        response = client.get('/resource/users', headers=headers)
+        assert response.status_code == 401
+
+    def test_admin_resource(self, client, headers):
+        response = client.get('/resource/admins', headers=headers)
+        assert response.status_code == 401
+
+
 @pytest.mark.parametrize('token_sub', [user['sub']], indirect=True)
 @pytest.mark.parametrize('token_iss', [user['iss']], indirect=True)
 class TestUsingUserToken():
