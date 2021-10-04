@@ -4,9 +4,6 @@ The LoginManager class.
 """
 
 import flask_login
-from flask_login import AnonymousUserMixin
-
-__all__ = ["UserMixin", "AnonymousUserMixin"]
 
 
 class UserMixin(flask_login.UserMixin):

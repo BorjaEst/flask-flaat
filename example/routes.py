@@ -1,7 +1,7 @@
+import flask_flaat
 from flask import Blueprint, Response
 
 from . import authorization
-from .extensions import login_manager
 
 # -------------------------------------------------------------------
 # Resource blueprint routes -----------------------------------------
@@ -31,12 +31,12 @@ user_blp = Blueprint('users', __name__)
 
 
 @user_blp.route('login', methods=['GET'])
-@login_manager.login
-def login(user):
+def login():
+    flask_flaat.login_user()
     return Response('', status=204, mimetype='application/json')
 
 
 @user_blp.route('logout', methods=['GET'])
-@login_manager.logout
-def logout(user):
+def logout():
+    flask_flaat.logout_user()
     return Response('', status=204, mimetype='application/json')

@@ -6,9 +6,19 @@ It lets you log your users in and out in a database-independent manner.
 :license: MIT, see LICENSE for more details.
 """
 
+from flask_login import (AnonymousUserMixin, current_user, login_required,
+                         logout_user)
+
 from .login_manager import FlaatLoginManager as LoginManager
 from .mixins import UserMixin
-from flask_login import login_required
+from .utils import login_user
 
-
-__all__ = ["LoginManager", "UserMixin", "login_required"]
+__all__ = [
+    "LoginManager",
+    "UserMixin",
+    "AnonymousUserMixin",
+    "login_user",
+    "logout_user",
+    "login_required",
+    "current_user",
+]
