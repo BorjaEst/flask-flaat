@@ -14,7 +14,7 @@ class User(UserMixin, database.Model):
         in cookie param '_user_id' when using flask_login.login_user 
         and to be collected later by login_manager.user_loader
         """
-        return (self.token_sub, self.token_iss)
+        return (self.sub, self.iss)
 
 
 class Admin(User):

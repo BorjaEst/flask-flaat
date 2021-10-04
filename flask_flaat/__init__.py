@@ -8,5 +8,7 @@ It lets you log your users in and out in a database-independent manner.
 
 from .login_manager import FlaatLoginManager as LoginManager
 from .mixins import UserMixin
+from flask_login import login_user, logout_user
 
-__all__ = ["LoginManager", "UserMixin"]
+
+__all__ = ["LoginManager", "UserMixin", "login_user", "logout_user"]
