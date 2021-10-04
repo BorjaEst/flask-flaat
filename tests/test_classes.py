@@ -9,7 +9,7 @@ class UsesLogin():
 
     @pytest.fixture(scope="function")
     def logout(self, client, login):
-        client.get('/user/logout')
+        return client.get('/user/logout')
 
     def test_correct_login(self, login):
         assert login.status_code == 204
