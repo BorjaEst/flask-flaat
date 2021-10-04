@@ -6,7 +6,9 @@ from example import create_app, database
 configs = [{
     'SECRET_KEY': 'not-so-secret-for-testing',
     'CLIENT_ID': "test-oidc-client",
-    'CLIENT_SECRET': "not-so-secret-for-testing"
+    'CLIENT_SECRET': "not-so-secret-for-testing",
+    'SQLALCHEMY_DATABASE_URI': "sqlite:///:memory:",
+    'SQLALCHEMY_TRACK_MODIFICATIONS': False
 }]
 
 

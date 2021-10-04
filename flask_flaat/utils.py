@@ -22,8 +22,9 @@ def group_required(**flaat_kwargs):
         @functools.wraps(func)
         def decorated_view(*args, **kwargs):
             flaat = current_app.login_manager._flaat
-            return flaat.group_required(**flaat_kwargs)(func)(*args, **kwargs)
-        return decorated_view
+            decorator = flaat.group_required
+            return decorator(**flaat_kwargs)(func)(*args, **kwargs)
+        return flask_login.login_required(decorated_view)
     return wrapper
 
 
@@ -32,8 +33,9 @@ def aarc_g002_group_required(**flaat_kwargs):
         @functools.wraps(func)
         def decorated_view(*args, **kwargs):
             flaat = current_app.login_manager._flaat
-            return flaat.aarc_g002_group_required(**flaat_kwargs)(func)(*args, **kwargs)
-        return decorated_view
+            decorator = flaat.aarc_g002_group_required
+            return decorator(**flaat_kwargs)(func)(*args, **kwargs)
+        return flask_login.login_required(decorated_view)
     return wrapper
 
 
@@ -42,6 +44,7 @@ def aarc_g002_entitlement_required(**flaat_kwargs):
         @functools.wraps(func)
         def decorated_view(*args, **kwargs):
             flaat = current_app.login_manager._flaat
-            return flaat.aarc_g002_entitlement_required(**flaat_kwargs)(func)(*args, **kwargs)
-        return decorated_view
+            decorator = flaat.aarc_g002_entitlement_required
+            return decorator(**flaat_kwargs)(func)(*args, **kwargs)
+        return flask_login.login_required(decorated_view)
     return wrapper
