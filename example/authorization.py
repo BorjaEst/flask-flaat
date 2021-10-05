@@ -5,8 +5,11 @@ from .models import User
 
 
 @login_manager.user_loader
-def load_user(user_subiss):
-    return User.query.get(user_subiss)
+def load_user(user_info):
+    return User.query.get((
+        user_info['body']['sub'],
+        user_info['body']['iss'],
+    ))
 
 
 def login_required(route):

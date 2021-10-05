@@ -12,8 +12,5 @@ class UserMixin(flask_login.UserMixin):
     """
 
     def get_id(self):
-        try:
-            return (self.sub, self.iss)
-        except AttributeError:
-            error_msg = 'No `sub` or `iss` - override `get_id`'
-            raise NotImplementedError(error_msg)
+        """Patched at flask_flaat.utils:30"""
+        return None

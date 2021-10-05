@@ -6,15 +6,18 @@ import functools
 
 import flask_login
 from flaat import tokentools
-from flask import abort, current_app, request
+from flask import abort, current_app, request, session
 
 
 def login_user(**kwargs):
     at = tokentools.get_access_token_from_request(request)
     ti = tokentools.get_accesstoken_info(at) if at else abort(401)
-    user_subiss = (ti['body']['sub'], ti['body']['iss'])
-    user = current_app.login_manager._user_callback(user_subiss)
-    return flask_login.login_user(user, **kwargs) if user else abort(401)
+    user = current_app.login_manager._user_callback(ti)
+    result = flask_login.login_user(user, **kwargs) if user else abort(401)
+
+    # WARNING Dirty code: Patch '_user_id' with what we really want to store
+    session['_user_id'] = ti    # Save user information
+    return result
 
 
 def group_required(**flaat_kwargs):

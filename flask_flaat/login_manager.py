@@ -63,5 +63,4 @@ class FlaatLoginManager(LoginManager):
     def request_callback(self, request):
         at = tokentools.get_access_token_from_request(request)
         ti = tokentools.get_accesstoken_info(at) if at else abort(401)
-        user_subiss = (ti['body']['sub'], ti['body']['iss'])
-        return self._user_callback(user_subiss)
+        return self._user_callback(ti)
