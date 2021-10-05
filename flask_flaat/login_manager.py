@@ -2,7 +2,7 @@
 -----------------------------
 The LoginManager class.
 """
-from flaat import Flaat, tokentools
+from flaat import Flaat
 from flask import abort
 from flask_login import LoginManager
 
@@ -61,6 +61,5 @@ class FlaatLoginManager(LoginManager):
         raise RuntimeError("You should not use this method")
 
     def request_callback(self, request):
-        at = tokentools.get_access_token_from_request(request)
-        ti = tokentools.get_accesstoken_info(at) if at else abort(401)
-        return self._user_callback(ti)
+        user_info = self._flaat._get_all_info_from_request(request)
+        return self._user_callback(user_info) if user_info else abort(401)

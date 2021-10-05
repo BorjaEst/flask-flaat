@@ -11,8 +11,7 @@ from flask_login import (AnonymousUserMixin, current_user, login_required,
 
 from .login_manager import FlaatLoginManager as LoginManager
 from .mixins import UserMixin
-from .utils import (aarc_g002_entitlement_required, aarc_g002_group_required,
-                    group_required, login_user)
+from .utils import group_required, login_user
 
 __all__ = [
     "LoginManager",
@@ -23,6 +22,4 @@ __all__ = [
     "login_required",
     "current_user",
     "group_required",
-    "aarc_g002_group_required",
-    "aarc_g002_entitlement_required",
 ]
