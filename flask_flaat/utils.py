@@ -6,7 +6,8 @@ import functools
 
 import flask_login
 from flaat import ensure_is_list
-from flask import abort, current_app, request, session
+from flask import abort, current_app, has_request_context, request, session
+from werkzeug.local import LocalProxy
 
 
 def login_user(**kwargs):
@@ -23,18 +24,25 @@ def login_user(**kwargs):
     return result
 
 
+request_userinfo = LocalProxy(lambda: _get_userinfo())
+
+
+def _get_userinfo():
+    if has_request_context():
+        flaat = current_app.login_manager._flaat
+        if '_user_id' in session:
+            return session.get('_user_id')
+        else:
+            return flaat._get_all_info_from_request(request)
+
+
 def group_required(**flaat_kwargs):
     def wrapper(func):
         @functools.wraps(func)
         def decorated_view(*args, **kwargs):
             flaat = current_app.login_manager._flaat
-            if '_user_id' in session:
-                user_info = session.get('_user_id')
-                _group_required(flaat, user_info, **flaat_kwargs)
-                return func(*args, **kwargs)
-            else:
-                decorator = flaat.group_required
-                return decorator(**flaat_kwargs)(func)(*args, **kwargs)
+            _group_required(flaat, request_userinfo, **flaat_kwargs)
+            return func(*args, **kwargs)
         return flask_login.login_required(decorated_view)
     return wrapper
 
