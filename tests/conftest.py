@@ -1,15 +1,11 @@
 import jwt
 import pytest
 import flaat
-from example import create_app, database
+from example.application import create_app, database
 
-configs = [{
-    'SECRET_KEY': 'not-so-secret-for-testing',
-    'CLIENT_ID': "test-oidc-client",
-    'CLIENT_SECRET': "not-so-secret-for-testing",
-    'SQLALCHEMY_DATABASE_URI': "sqlite:///:memory:",
-    'SQLALCHEMY_TRACK_MODIFICATIONS': False
-}]
+configs = [
+    "Configuration_1",
+]
 
 
 # -------------------------------------------------------------------
@@ -18,7 +14,7 @@ configs = [{
 @pytest.fixture(scope='session', params=configs)
 def application_configuration(request):
     """Patch fixture to set test configuration variables."""
-    return request.param
+    return "tests.settings." + request.param
 
 
 @pytest.fixture(scope="session")

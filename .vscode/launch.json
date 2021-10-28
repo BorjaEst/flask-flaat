@@ -10,7 +10,7 @@
             "request": "launch",
             "module": "flask",
             "env": {
-                "FLASK_APP": "example",
+                "FLASK_APP": "example/application:create_app('example.settings.Development')",
                 "FLASK_ENV": "development"
             },
             "args": [
