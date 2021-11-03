@@ -1,5 +1,5 @@
 import pytest
-from example import models
+from example.application import models
 
 from .test_classes import UsesLogin, NeedsAdmin
 
