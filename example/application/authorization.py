@@ -1,10 +1,11 @@
-import functools
-
 import flask_flaat
 from flask import current_app
+from flask_flaat import login_required
 
 from .extensions import login_manager
 from .models import User
+
+__all__ = ['login_required', 'admin_required']
 
 
 @login_manager.user_loader
@@ -15,22 +16,7 @@ def load_user(user_info):
     ))
 
 
-def login_required(route):
-    """Decorator to enforce a valid login."""
-    @functools.wraps(route)
-    def decorated_function(*args, **kwargs):
-        return flask_flaat.login_required(
-            route
-        )(*args, **kwargs)
-    return decorated_function
-
-
-def admin_required(route):
-    """Decorator to enforce a valid admin."""
-    @functools.wraps(route)
-    def decorated_function(*args, **kwargs):
-        return flask_flaat.group_required(
-            group=current_app.config['ADMINS_GROUP'],
-            claim=current_app.config['ADMINS_CLAIM'],
-        )(route)(*args, **kwargs)
-    return decorated_function
+@flask_flaat.scope_required('eduperson_entitlement')
+def admin_required(entitlements):
+    any_of = current_app.config['ADMIN_ENTITLEMENTS']
+    return not set(any_of).isdisjoint(entitlements)
