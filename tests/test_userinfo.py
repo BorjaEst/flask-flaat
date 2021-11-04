@@ -1,6 +1,6 @@
 import pytest
 import flaat
-from flask_flaat import request_userinfo
+from flask_flaat import current_userinfo
 
 
 @pytest.fixture(scope="module", autouse=True)
@@ -24,7 +24,7 @@ def introspection_info(session_mocker):
 def test_current_userinfo(app, access_token):
     headers = {'Authorization': 'Bearer {}'.format(access_token)}
     with app.test_request_context(headers=headers):
-        assert request_userinfo['body']['sub'] == 'user_sub'
-        assert request_userinfo['body']['iss'] == 'user_iss'
-        assert request_userinfo['key1'] == 'value1'
-        assert request_userinfo['key2'] == 'value2'
+        assert current_userinfo['body']['sub'] == 'user_sub'
+        assert current_userinfo['body']['iss'] == 'user_iss'
+        assert current_userinfo['key1'] == 'value1'
+        assert current_userinfo['key2'] == 'value2'

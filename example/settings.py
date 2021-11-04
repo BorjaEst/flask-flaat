@@ -6,8 +6,7 @@ class Default(object):
     SECRET_KEY = "not-so-secret-for-testing"
     SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    ADMINS_GROUP = "admins"
-    ADMINS_CLAIM = "groups"
+    ADMIN_ENTITLEMENTS = ["urn:admins"]
 
 
 class Production(Default):

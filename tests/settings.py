@@ -11,5 +11,4 @@ class Default(object):
 class Configuration_1(Default):
     CLIENT_ID = "production-oidc-client"
     CLIENT_SECRET = "secret-example"
-    ADMINS_GROUP = "admins"
-    ADMINS_CLAIM = "groups"
+    ADMIN_ENTITLEMENTS = ["urn:admins"]

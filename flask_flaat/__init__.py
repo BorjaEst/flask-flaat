@@ -11,7 +11,7 @@ from flask_login import (AnonymousUserMixin, current_user, login_required,
 
 from .login_manager import FlaatLoginManager as LoginManager
 from .mixins import UserMixin
-from .utils import group_required, login_user, request_userinfo
+from .utils import current_userinfo, login_user, scope_required
 
 __all__ = [
     "LoginManager",
@@ -21,6 +21,6 @@ __all__ = [
     "logout_user",
     "login_required",
     "current_user",
-    "request_userinfo",
-    "group_required",
+    "current_userinfo",
+    "scope_required",
 ]

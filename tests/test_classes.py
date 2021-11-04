@@ -45,5 +45,5 @@ class NeedsAdmin():
     def introspection_info(request, class_mocker):
         class_mocker.patch.object(
             flaat.Flaat, 'get_info_from_introspection_endpoints',
-            lambda *args, **kwargs: {'groups': ['admins']},
+            lambda *args, **kwargs: {'eduperson_entitlement': ["urn:admins"]},
         )
