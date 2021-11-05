@@ -1,7 +1,7 @@
 __title__ = 'Flask-flaat'
 __description__ = 'User session management with tokens for Flask'
 __url__ = 'https://github.com/BorjaEst/flask-flaat'
-__version_info__ = ('0', '0', '4')
+__version_info__ = ('0', '0', '5')
 __version__ = '.'.join(__version_info__)
 __author__ = 'Borja Esteban'
 __author_email__ = ''
