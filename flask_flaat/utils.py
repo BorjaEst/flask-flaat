@@ -39,7 +39,7 @@ def scope_required(scope):
     def wrapper(func):
         @functools.wraps(func)
         def decorated_view(*args, **kwargs):
-            if current_userinfo is None:
+            if current_userinfo._get_current_object() is None:
                 abort(401, f"Invalid or missing authentication token")
             if scope not in current_userinfo:
                 abort(403, f"No scope '{scope}' available at user info")
