@@ -7,6 +7,7 @@ class Default(object):
     SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     ADMIN_ENTITLEMENTS = ["urn:admins"]
+    TRUSTED_OP_LIST = ["https://aai-dev.egi.eu/oidc"]
 
 
 class Production(Default):
