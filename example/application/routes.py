@@ -1,7 +1,7 @@
 import flask_flaat
 from flask import Blueprint, Response
 
-from . import authorization
+from . import authorization, models, database
 
 # -------------------------------------------------------------------
 # Resource blueprint routes -----------------------------------------
@@ -28,6 +28,19 @@ def admins_endpoint():
 # -------------------------------------------------------------------
 # User blueprint routes ---------------------------------------------
 user_blp = Blueprint('users', __name__)
+
+
+@user_blp.route('register', methods=['GET', 'POST'])
+@flask_flaat.scope_required('email')
+def register():
+    user = models.User(
+        sub=flask_flaat.current_userinfo['body']['sub'],
+        iss=flask_flaat.current_userinfo['body']['iss'],
+        email=flask_flaat.current_userinfo['email'],
+    )
+    database.session.add(user)
+    database.session.commit()
+    return Response('', status=204, mimetype='application/json')
 
 
 @user_blp.route('login', methods=['GET'])
