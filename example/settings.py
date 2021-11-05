@@ -9,6 +9,25 @@ class Default(object):
     ADMIN_ENTITLEMENTS = ["urn:admins"]
     TRUSTED_OP_LIST = ["https://aai-dev.egi.eu/oidc"]
 
+    API_TITLE = 'Flask Flaat example'
+    API_VERSION = 'v1'
+    OPENAPI_VERSION = "3.0.2"
+    OPENAPI_JSON_PATH = "api-spec.json"
+    OPENAPI_URL_PREFIX = "/"
+    OPENAPI_SWAGGER_UI_PATH = "/"
+    OPENAPI_SWAGGER_UI_URL = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
+    API_SPEC_OPTIONS = {}
+    API_SPEC_OPTIONS['security'] = [{"bearerAuth": []}]
+    API_SPEC_OPTIONS['components'] = {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+
 
 class Production(Default):
     CLIENT_ID = "production-oidc-client"

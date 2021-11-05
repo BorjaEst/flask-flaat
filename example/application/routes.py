@@ -1,5 +1,5 @@
 import flask_flaat
-from flask import Blueprint, Response
+from flask_smorest import Blueprint
 
 from . import authorization, models, database
 
@@ -9,20 +9,23 @@ resource_blp = Blueprint('resource', __name__)
 
 
 @resource_blp.route('public', methods=['GET'])
+@resource_blp.response(204)
 def public_endpoint():
-    return Response('', status=204, mimetype='application/json')
+    pass
 
 
 @resource_blp.route('users', methods=['GET'])
+@resource_blp.response(204)
 @authorization.login_required
 def users_endpoint():
-    return Response('', status=204, mimetype='application/json')
+    pass
 
 
 @resource_blp.route('admins', methods=['GET'])
+@resource_blp.response(204)
 @authorization.admin_required
 def admins_endpoint():
-    return Response('', status=204, mimetype='application/json')
+    pass
 
 
 # -------------------------------------------------------------------
@@ -31,6 +34,7 @@ user_blp = Blueprint('users', __name__)
 
 
 @user_blp.route('register', methods=['GET', 'POST'])
+@user_blp.response(204)
 @flask_flaat.scope_required('email')
 def register():
     user = models.User(
@@ -40,17 +44,18 @@ def register():
     )
     database.session.add(user)
     database.session.commit()
-    return Response('', status=204, mimetype='application/json')
-
+    pass
 
 @user_blp.route('login', methods=['GET'])
+@user_blp.response(204)
 def login():
     flask_flaat.login_user()
-    return Response('', status=204, mimetype='application/json')
+    pass
 
 
 @user_blp.route('logout', methods=['GET'])
+@user_blp.response(204)
 @authorization.login_required
 def logout():
     flask_flaat.logout_user()
-    return Response('', status=204, mimetype='application/json')
+    pass
