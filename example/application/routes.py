@@ -37,6 +37,7 @@ def login():
 
 
 @user_blp.route('logout', methods=['GET'])
+@authorization.login_required
 def logout():
     flask_flaat.logout_user()
     return Response('', status=204, mimetype='application/json')
