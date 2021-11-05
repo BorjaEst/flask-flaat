@@ -9,11 +9,13 @@ from flask import abort, current_app, has_request_context, request, session
 from werkzeug.local import LocalProxy
 
 
+current_userinfo = LocalProxy(lambda: _get_userinfo())
+
+
 def login_user(**kwargs):
-    flaat = current_app.login_manager._flaat
-    userinfo = flaat._get_all_info_from_request(request)
-    if not userinfo:
-        abort(401)
+    userinfo = current_userinfo._get_current_object()
+    if userinfo is None:
+        abort(401, f"Invalid or missing authentication token")
 
     user = current_app.login_manager._user_callback(userinfo)
     result = flask_login.login_user(user, **kwargs) if user else abort(401)
@@ -23,16 +25,16 @@ def login_user(**kwargs):
     return result
 
 
-current_userinfo = LocalProxy(lambda: _get_userinfo())
-
-
 def _get_userinfo():
     if has_request_context():
         flaat = current_app.login_manager._flaat
         if '_user_id' in session:
             return session.get('_user_id')
         else:
-            return flaat._get_all_info_from_request(request)
+            try:
+                return flaat._get_all_info_from_request(request)
+            except TypeError:
+                return None
 
 
 def scope_required(scope):

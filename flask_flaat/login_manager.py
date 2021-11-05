@@ -61,5 +61,8 @@ class FlaatLoginManager(LoginManager):
         raise RuntimeError("You should not use this method")
 
     def request_callback(self, request):
-        user_info = self._flaat._get_all_info_from_request(request)
-        return self._user_callback(user_info) if user_info else None
+        try:
+            userinfo = self._flaat._get_all_info_from_request(request)
+            return self._user_callback(userinfo) if userinfo else None
+        except TypeError:
+            return None
