@@ -62,4 +62,4 @@ class FlaatLoginManager(LoginManager):
 
     def request_callback(self, request):
         user_info = self._flaat._get_all_info_from_request(request)
-        return self._user_callback(user_info) if user_info else abort(401)
+        return self._user_callback(user_info) if user_info else None
