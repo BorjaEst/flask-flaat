@@ -20,7 +20,7 @@ def test_incorrect_login(client, access_token):
 def test_incorrect_logout(client, access_token):
     headers = {'Authorization': 'Bearer {}'.format(access_token)}
     response = client.get('/user/logout', headers=headers)
-    assert response.status_code == 204
+    assert response.status_code == 401
 
 
 class UsesLogin():
